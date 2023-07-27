@@ -28,7 +28,7 @@ public class ProductsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("{guid:id}", Name = "GetProduct")]
+    [HttpGet("{id:guid}", Name = "GetProduct")]
     [ProducesResponseType(Status200OK, Type = typeof(ProductDto))]
     [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
     [ProducesResponseType(Status404NotFound, Type = typeof(ErrorDto))]
@@ -63,7 +63,7 @@ public class ProductsController : ControllerBase
         return Created($"api/products/{model.Id}", _mapper.Map<ProductDto>(model));
     }
 
-    [HttpPut("{guid:id}", Name = "UpdateProduct")]
+    [HttpPut("{id:guid}", Name = "UpdateProduct")]
     [ProducesResponseType(Status200OK, Type = typeof(ProductDto))]
     [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
     [ProducesResponseType(Status404NotFound, Type = typeof(ErrorDto))]
@@ -78,7 +78,7 @@ public class ProductsController : ControllerBase
         return Ok(_mapper.Map<ProductDto>(model));
     }
 
-    [HttpDelete("{guid:id}", Name = "DeleteProduct")]
+    [HttpDelete("{id:guid}", Name = "DeleteProduct")]
     [ProducesResponseType(Status204NoContent)]
     [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
     [ProducesResponseType(Status404NotFound, Type = typeof(ErrorDto))]

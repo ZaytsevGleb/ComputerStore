@@ -23,7 +23,8 @@ public sealed class Startup
         services
             .AddBusinessLogicDependencies()
             .AddDataAccessDependencies(_configuration)
-            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
+            .AddAutoMapper(Assembly.GetExecutingAssembly());
 
         // Api configuration
         services
@@ -60,7 +61,7 @@ public sealed class Startup
             {
                 endpoints.MapGet(
                     pattern: "/",
-                    requestDelegate: async context => await context.Response.WriteAsync("0_o"));
+                    requestDelegate: async context => await context.Response.WriteAsync("Ok"));
 
                 endpoints.MapControllers();
             });
