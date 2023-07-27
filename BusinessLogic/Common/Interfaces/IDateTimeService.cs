@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Common.Services;
+﻿namespace BusinessLogic.Common.Interfaces;
 
 public interface IDateTimeService
 {

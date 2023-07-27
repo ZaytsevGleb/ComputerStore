@@ -1,4 +1,6 @@
-﻿namespace BusinessLogic.Common.Services;
+﻿using BusinessLogic.Common.Interfaces;
+
+namespace BusinessLogic.Common.Services;
 
 public sealed class DateTimeService : IDateTimeService
 {

@@ -1,38 +1,73 @@
 ﻿using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
 namespace DataAccess.Repositories;
 
-internal sealed class Repository<T> : IRepository<T> where T : IEntity
+internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
-    public Task<T> CreateAsync(T item)
+    private readonly ApplicationDbContext _db;
+    private readonly DbSet<TEntity> _entities;
+
+    public Repository(ApplicationDbContext db)
     {
-        throw new NotImplementedException();
+        _db = db;
+        _entities = _db.Set<TEntity>();
+    }
+    public async Task<TEntity> CreateAsync(TEntity item)
+    {
+        _entities.Add(item);
+        await _db.SaveChangesAsync();
+
+        return item;
     }
 
-    public Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(TEntity item)
     {
-        throw new NotImplementedException();
+        _entities.Remove(item);
+        await _db.SaveChangesAsync();
     }
 
-    public Task<List<T>> FindAsync(Expression<Func<T, bool>>? predicate = null)
+    public async Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>>? predicate = null)
     {
-        throw new NotImplementedException();
+        var dbQuery = _entities
+            .AsNoTracking()
+            .AsQueryable();
+
+        if (predicate != null)
+        {
+            dbQuery = dbQuery.Where(predicate);
+        }
+
+        return await dbQuery.ToListAsync();
     }
 
-    public Task<T> FirstAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+    public async Task<TEntity?> FirstAsync(Expression<Func<TEntity, bool>> predicate,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
     {
-        throw new NotImplementedException();
+        var dbQuery = _entities
+            .AsQueryable();
+
+        if (include != null)
+        {
+            dbQuery = include.Invoke(dbQuery);
+        }
+
+        return await dbQuery
+            .FirstOrDefaultAsync();
     }
 
-    public Task<T> GetAsync(Guid id)
+    public async Task<TEntity?> GetAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _entities
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task<T> UpdateAsync(T item)
+    public async Task<TEntity> UpdateAsync(TEntity item)
     {
-        throw new NotImplementedException();
+        _entities.Update(item);
+        await _db.SaveChangesAsync();
+        return item;
     }
 }

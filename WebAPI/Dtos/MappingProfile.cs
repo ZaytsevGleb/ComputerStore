@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
-using BusinessLogic.Orders.Models;
 using BusinessLogic.Products.Models;
 
-namespace WebAPI.Dtos
+namespace WebAPI.Dtos;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<ProductModel, ProductDto>();
-            CreateMap<OrderModel, OrderDto>();
-        }
+        CreateMap<ProductModel, ProductDto>();
     }
 }

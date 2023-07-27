@@ -4,7 +4,7 @@ namespace BusinessLogic.Common.Exceptions;
 
 public sealed class BadRequestException : Exception
 {
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     public BadRequestException(string message) : base(message)
     {

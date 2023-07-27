@@ -15,6 +15,7 @@ public static class DependencyInjection
 
         services
             .AddScoped<IProductsService, ProductService>();
+
         services
             .AddSingleton<IDateTimeService, DateTimeService>();
 

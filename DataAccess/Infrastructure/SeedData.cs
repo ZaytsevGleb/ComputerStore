@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace DataAccess.Infrastructure;
+﻿namespace DataAccess.Infrastructure;
 
 public static class SeedData
 {

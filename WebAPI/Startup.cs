@@ -1,6 +1,8 @@
 ﻿using BusinessLogic;
 using DataAccess;
+using FluentValidation;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using WebAPI.Middleware;
 
@@ -20,7 +22,8 @@ public sealed class Startup
         // Register application dependencies
         services
             .AddBusinessLogicDependencies()
-            .AddDataAccessDependencies(_configuration);
+            .AddDataAccessDependencies(_configuration)
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         // Api configuration
         services
@@ -58,6 +61,8 @@ public sealed class Startup
                 endpoints.MapGet(
                     pattern: "/",
                     requestDelegate: async context => await context.Response.WriteAsync("0_o"));
+
+                endpoints.MapControllers();
             });
     }
 }

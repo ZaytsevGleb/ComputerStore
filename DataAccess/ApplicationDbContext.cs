@@ -6,7 +6,6 @@ namespace DataAccess;
 public sealed class ApplicationDbContext : DbContext
 {
     public DbSet<Product> Products { get; set; }
-    public DbSet<Order> Orders { get; set; }
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
@@ -15,5 +14,10 @@ public sealed class ApplicationDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
     }
 }

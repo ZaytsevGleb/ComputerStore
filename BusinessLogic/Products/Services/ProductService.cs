@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLogic.Common.Exceptions;
 using BusinessLogic.Common.Interfaces;
-using BusinessLogic.Common.Services;
 using BusinessLogic.Products.Models;
 using DataAccess.Entities;
 using DataAccess.Repositories;
@@ -29,45 +28,59 @@ internal sealed class ProductService : IProductsService
         var product = await _repository.GetAsync(id);
         if (product == null)
         {
-            throw new NotFoundException("");
+            throw new NotFoundException(nameof(Product), id);
         }
 
         return _mapper.Map<ProductModel>(product);
     }
 
-    public Task<List<ProductModel>> GetProductsAsync()
+    public async Task<IEnumerable<ProductModel>> GetProductsAsync(string? title)
     {
-        throw new NotImplementedException();
+        var products = string.IsNullOrEmpty(title)
+            ? await _repository.FindAsync()
+            : await _repository.FindAsync(x => x.Title == title);
+
+        return products
+            .Select(_mapper.Map<ProductModel>)
+            .ToList();
     }
 
-    public async Task<ProductModel> CreateProductAsync(ProductModel product)
+    public async Task<ProductModel> CreateProductAsync(ProductModel productModel)
     {
-        var existProducts = await _repository.FindAsync(x => x.Title == product.Title);
-        if (existProducts != null)
+        var products = await _repository.FindAsync(x => x.Title == productModel.Title);
+        if (products.Any())
         {
             throw new BadRequestException("");
         }
 
-        var createdProduct = await _repository.CreateAsync(_mapper.Map<Product>(product));
-        return _mapper.Map<ProductModel>(createdProduct);
+        var product = new Product
+        {
+            Title = productModel.Title,
+            Price = productModel.Price,
+            Description = productModel.Description,
+            Type = productModel.Type,
+            CreatedDate = _dateTimeService.UtcNow
+        };
+
+        await _repository.CreateAsync(product);
+        return _mapper.Map<ProductModel>(product);
     }
 
-    public async Task<ProductModel> UpdateProductAsync(Guid id, ProductModel product)
+    public async Task<ProductModel> UpdateProductAsync(Guid id, ProductModel productModel)
     {
-        var existProduct = await _repository.GetAsync(id);
-        if (existProduct == null)
+        var product = await _repository.GetAsync(id);
+        if (product == null)
         {
-            throw new NotFoundException("");
+            throw new NotFoundException(nameof(Product), id);
         }
 
-        existProduct.Title = product.Title;
-        existProduct.Amount = product.Amount;
-        existProduct.Price = product.Price;
-        existProduct.Description = product.Description;
-        existProduct.Type = product.Type;
-        existProduct.ModifiedDate = _dateTimeService.UtcNow;
+        product.Title = productModel.Title;
+        product.Price = productModel.Price;
+        product.Description = productModel.Description;
+        product.Type = productModel.Type;
+        product.ModifiedDate = _dateTimeService.UtcNow;
 
-        var updatedProduct = await _repository.UpdateAsync(existProduct);
+        var updatedProduct = await _repository.UpdateAsync(product);
         return _mapper.Map<ProductModel>(updatedProduct);
     }
 
@@ -76,8 +89,10 @@ internal sealed class ProductService : IProductsService
         var product = await _repository.GetAsync(id);
 
         if (product == null)
-            throw new BadRequestException("");
+        {
+            throw new NotFoundException(nameof(Product), id);
+        }
 
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(product);
     }
 }

@@ -45,7 +45,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(Status500InternalServerError, Type = typeof(ErrorDto))]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsAsync([FromQuery] ProductSearchDto searchDto)
     {
-        var models = await _productsService.GetProductsAsync();
+        var models = await _productsService.GetProductsAsync(searchDto.Title);
         return Ok(models.Select(_mapper.Map<ProductDto>));
     }
 

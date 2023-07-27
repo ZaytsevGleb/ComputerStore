@@ -1,10 +1,8 @@
 ﻿namespace DataAccess.Entities;
 
-public sealed class Product : IEntity
+public sealed class Product : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Title { get; set; } = default!;
-    public int Amount { get; set; }
     public decimal Price { get; set; }
     public string Description { get; set; } = default!;
     public ProductType Type { get; set; }
