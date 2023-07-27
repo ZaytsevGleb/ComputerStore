@@ -8,8 +8,7 @@ internal sealed class ProductsConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.ToTable("Products", "dbo")
-            .Property(x => x.Type)
-            .HasConversion<string>();
+        builder.ToTable("Products", "dbo");
     }
 }
+
