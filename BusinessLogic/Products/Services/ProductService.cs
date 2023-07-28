@@ -4,6 +4,8 @@ using BusinessLogic.Common.Interfaces;
 using BusinessLogic.Products.Models;
 using DataAccess.Entities;
 using DataAccess.Repositories;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace BusinessLogic.Products.Services;
 
@@ -12,15 +14,18 @@ internal sealed class ProductService : IProductsService
     private readonly IRepository<Product> _repository;
     private readonly IDateTimeService _dateTimeService;
     private readonly IMapper _mapper;
+    private readonly ILogger<ProductService> _logger;
 
     public ProductService(
         IRepository<Product> repository,
         IDateTimeService dateTimeService,
-        IMapper mapper)
+        IMapper mapper,
+        ILogger<ProductService> logger)
     {
         _repository = repository;
         _dateTimeService = dateTimeService;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<ProductModel> GetProductAsync(Guid id)
@@ -28,6 +33,7 @@ internal sealed class ProductService : IProductsService
         var product = await _repository.GetAsync(id);
         if (product == null)
         {
+            _logger.LogError($"Product with id: {id} was not found");
             throw new NotFoundException(nameof(Product), id);
         }
 
@@ -71,6 +77,7 @@ internal sealed class ProductService : IProductsService
         var product = await _repository.GetAsync(id);
         if (product == null)
         {
+            _logger.LogError($"Product with id: {id} was not found");
             throw new NotFoundException(nameof(Product), id);
         }
 
@@ -90,6 +97,7 @@ internal sealed class ProductService : IProductsService
 
         if (product == null)
         {
+            _logger.LogError($"Product with id: {id} was not found");
             throw new NotFoundException(nameof(Product), id);
         }
 

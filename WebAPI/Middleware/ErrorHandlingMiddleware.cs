@@ -26,12 +26,12 @@ namespace WebAPI.Middleware
             catch (NotFoundException ex)
             {
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
-                await context.Response.WriteAsJsonAsync(new ErrorDto { Description = ex.Message });
+                await context.Response.WriteAsJsonAsync(new ErrorDto {Message = ex.Message, Description = ex.StackTrace});
             }
             catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(new ErrorDto { Message = ex.Message });
+                await context.Response.WriteAsJsonAsync(new ErrorDto { Message = ex.Message, Description = ex.StackTrace });
             }
         }
     }
