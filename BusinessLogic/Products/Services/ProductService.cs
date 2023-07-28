@@ -5,7 +5,6 @@ using BusinessLogic.Products.Models;
 using DataAccess.Entities;
 using DataAccess.Repositories;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace BusinessLogic.Products.Services;
 
@@ -44,11 +43,10 @@ internal sealed class ProductService : IProductsService
     {
         var products = string.IsNullOrEmpty(title)
             ? await _repository.FindAsync()
-            : await _repository.FindAsync(x => x.Title == title);
+            : await _repository.FindAsync(x => x.Title == title
+                || x.Title.Contains(title));
 
-        return products
-            .Select(_mapper.Map<ProductModel>)
-            .ToList();
+        return products.Select(_mapper.Map<ProductModel>);
     }
 
     public async Task<ProductModel> CreateProductAsync(ProductModel productModel)
@@ -56,7 +54,7 @@ internal sealed class ProductService : IProductsService
         var products = await _repository.FindAsync(x => x.Title == productModel.Title);
         if (products.Any())
         {
-            throw new BadRequestException("");
+            throw new BadRequestException("This product already exists");
         }
 
         var product = new Product
