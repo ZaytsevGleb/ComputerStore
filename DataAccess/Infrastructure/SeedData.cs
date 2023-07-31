@@ -20,41 +20,41 @@ public static class SeedData
         {
             new()
             {
-                Title = "Видеокарта BIOSTAR GeForce RTX 3070 8GB GDDR6 VN3706RM82",
+                Title = "PELADN AMD Radeon RX6650XT 8GB GDDR6 PCI Express 4.0 Video Card",
                 Price = 1357,
-                Description = "8 ГБ GDDR6 LHR, 1500 МГц / 1725 МГц, 5888sp, 46 RT-ядер, трассировка лучей, 256 бит, HDMI, DisplayPort",
+                Description = "8GB 128-Bit GDDR6",
                 Type = ProductType.GPU,
                 CreatedDate = DateTime.UtcNow
             },
             new()
             {
-                Title = "Процессор Intel Celeron G1820",
+                Title = "Intel Core i5-12400F",
                 Price = 50.00m,
-                Description = "Socket - LGA1150, Ядро - Haswell (2013), Количество ядер - 2, Техпроцесс - 22 нм, Тактовая частота - 2700 МГц, Системная шина - 1333 МГц, DMI, Коэффициент умножения - 27",
+                Description = "Intel 7 Alder Lake Processor Base Power: 65W Maximum Turbo Power: 117W 18MB L3 Cache 7.5MB L2 Cache Windows 11 Supported Intel Laminar RM1 CPU Cooler",
                 Type = ProductType.CPU,
                 CreatedDate = DateTime.UtcNow
             },
             new()
             {
-                Title = "Материнская плата ASUS Prime H310M-K R2.0",
+                Title = "ASUS ROG STRIX Z790-H Gaming",
                 Price = 137.73m,
-                Description = "Socket - LGA1151 v2, Поддерживаемые процессоры - Intel Core i7/Core i5/Core i3/Pentium/Celeron, Поддержка многоядерных процессоров - есть, Чипсет - Intel H310, BIOS - AMI, Поддержка EFI - есть, Поддержка SLI/CrossFire - нет",
+                Description = "Intel LGA 1700 socket: Ready for 13th Gen Intel Core, and 12th Gen Intel Core, Pentium Gold, and Celeron® processors.",
                 Type = ProductType.MotherBoard,
                 CreatedDate = DateTime.UtcNow
             },
             new()
             {
-                Title = "Жесткий диск Toshiba P300 1TB [HDWD110UZSVA]",
+                Title = "Seagate Exos X20 ST20000NM007D ",
                 Price = 141.98m,
-                Description = "Тип - HDD, Поддержка секторов размером 4 КБ - есть, Назначение - для настольного компьютера, Форм-фактор - 3.5\", Объем - 1000 ГБ, Объем буферной памяти - 64 МБ, Скорость вращения - 7200 rpm",
+                Description = "7200 RPM 256MB Cache SATA 6.0Gb For Enterprise Storage",
                 Type = ProductType.HDD,
                 CreatedDate = DateTime.UtcNow
             },
             new()
             {
-                Title = "SSD Transcend SSD230S 2TB TS2TSSD230",
+                Title = "SABRENT 500GB Rocket Nvme PCIe 4.0 M.2 2280",
                 Price = 417.14m,
-                Description = "2.5\", SATA 3.0, микросхемы 3D TLC NAND, последовательный доступ: 560/520 MBps, случайный доступ: 85000/89000 IOps",
+                Description = "NVMe M.2 PCIe Gen4 x4 Interface. PCIe 4.0 Compliant / NVMe 1.3 Compliant.\r\nPower Management Support for APST / ASPM / L1.2.",
                 Type = ProductType.SSD,
                 CreatedDate= DateTime.UtcNow
             }

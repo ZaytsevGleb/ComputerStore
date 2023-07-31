@@ -54,7 +54,7 @@ public sealed class Startup
                 options.SwaggerEndpoint("../swagger/v1.0/swagger.json", "API v1.0");
                 options.RoutePrefix = "docs";
             })
-            .UseMiddleware<ErrorHandlingMiddleware>()
+            .UseMiddleware<ExceptionMiddleware>()
             .UseCors()
             .UseRouting()
             .UseEndpoints(endpoints =>

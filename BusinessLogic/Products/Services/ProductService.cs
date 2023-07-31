@@ -30,11 +30,6 @@ internal sealed class ProductService : IProductsService
     public async Task<ProductModel> GetProductAsync(Guid id)
     {
         var product = await _repository.GetAsync(id);
-        if (product == null)
-        {
-            _logger.LogError($"Product with id: {id} was not found");
-            throw new NotFoundException(nameof(Product), id);
-        }
 
         return _mapper.Map<ProductModel>(product);
     }
@@ -57,17 +52,8 @@ internal sealed class ProductService : IProductsService
             throw new BadRequestException("This product already exists");
         }
 
-        var product = new Product
-        {
-            Title = productModel.Title,
-            Price = productModel.Price,
-            Description = productModel.Description,
-            Type = productModel.Type,
-            CreatedDate = _dateTimeService.UtcNow
-        };
-
-        await _repository.CreateAsync(product);
-        return _mapper.Map<ProductModel>(product);
+        var createdProduct = await _repository.CreateAsync(_mapper.Map<Product>(productModel));
+        return _mapper.Map<ProductModel>(createdProduct);
     }
 
     public async Task<ProductModel> UpdateProductAsync(Guid id, ProductModel productModel)
@@ -75,17 +61,13 @@ internal sealed class ProductService : IProductsService
         var product = await _repository.GetAsync(id);
         if (product == null)
         {
-            _logger.LogError($"Product with id: {id} was not found");
+            _logger.LogError("Product with id: {id} was not found", id);
             throw new NotFoundException(nameof(Product), id);
         }
 
-        product.Title = productModel.Title;
-        product.Price = productModel.Price;
-        product.Description = productModel.Description;
-        product.Type = productModel.Type;
-        product.ModifiedDate = _dateTimeService.UtcNow;
+        productModel.ModifiedDate = _dateTimeService.UtcNow;
 
-        var updatedProduct = await _repository.UpdateAsync(product);
+        var updatedProduct = await _repository.UpdateAsync(_mapper.Map<Product>(productModel));
         return _mapper.Map<ProductModel>(updatedProduct);
     }
 
@@ -95,7 +77,7 @@ internal sealed class ProductService : IProductsService
 
         if (product == null)
         {
-            _logger.LogError($"Product with id: {id} was not found");
+            _logger.LogError("Product with id: {id} was not found", id);
             throw new NotFoundException(nameof(Product), id);
         }
 

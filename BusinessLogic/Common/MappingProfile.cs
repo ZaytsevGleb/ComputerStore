@@ -8,6 +8,6 @@ public sealed class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Product, ProductModel>();
+        CreateMap<Product, ProductModel>().ReverseMap();
     }
 }

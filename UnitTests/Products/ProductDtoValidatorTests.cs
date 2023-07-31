@@ -6,7 +6,7 @@ using Xunit;
 
 namespace UnitTests.Products;
 
-public sealed class ProductDtoValidatorTests
+public class ProductDtoValidatorTests
 {
     private readonly ProducDtoValidator _validator;
 

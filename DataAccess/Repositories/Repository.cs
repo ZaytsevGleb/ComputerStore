@@ -29,7 +29,7 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
         await _db.SaveChangesAsync();
     }
 
-    public async Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>>? predicate = null)
+    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>>? predicate = null)
     {
         var dbQuery = _entities
             .AsNoTracking()
@@ -61,6 +61,7 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
     public async Task<TEntity?> GetAsync(Guid id)
     {
         return await _entities
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
