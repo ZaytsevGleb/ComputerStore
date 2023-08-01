@@ -1,6 +1,4 @@
-﻿using DataAccess.Entities;
-using FluentValidation.TestHelper;
-using WebAPI.Dtos;
+﻿using FluentValidation.TestHelper;
 using WebAPI.Dtos.Validators;
 using Xunit;
 
@@ -18,35 +16,17 @@ public class ProductDtoValidatorTests
     [Fact]
     public void Validator_ShouldValidateProductDto()
     {
-        // Arrange 
-        var product = new ProductDto
-        {
-            Title = "Product",
-            Price = 1.00m,
-            Description = "Description",
-            Type = ProductType.GPU,
-            CreatedDate = DateTime.UtcNow
-        };
-
-        // Act/Assert
-        _validator.TestValidate(product).ShouldNotHaveAnyValidationErrors();
+        // Arrange/Act/Assert
+        _validator.TestValidate(SeedData.GetProductDto())
+            .ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact]
     public void Validator_ShouldThrowTitleError()
     {
-        // Arrange 
-        var product = new ProductDto
-        {
-            Title = string.Empty,
-            Price = 1.00m,
-            Description = "Description",
-            Type = ProductType.GPU,
-            CreatedDate = DateTime.UtcNow
-        };
-
-        // Act  /Assert
-        _validator.TestValidate(product).ShouldHaveValidationErrorFor(x => x.Title);
+        // Arrange/Act/Assert
+        _validator.TestValidate(SeedData.GetProductDtoWithoutTitle())
+            .ShouldHaveValidationErrorFor(x => x.Title);
     }
 
 
@@ -55,66 +35,32 @@ public class ProductDtoValidatorTests
     [InlineData(0)]
     public void Validator_ShouldThrowPriceError(decimal price)
     {
-        // Arrange 
-        var product = new ProductDto
-        {
-            Title = "Product",
-            Price = price,
-            Description = "Description",
-            Type = ProductType.GPU,
-            CreatedDate = DateTime.UtcNow
-        };
-
-        // Act/Assert
-        _validator.TestValidate(product).ShouldHaveValidationErrorFor(x => x.Price);
+        // Arrange/Act/Assert
+        _validator.TestValidate(SeedData.GetProductDtoCustomPrice(price))
+            .ShouldHaveValidationErrorFor(x => x.Price);
     }
 
     [Fact]
     public void Validator_ShouldThrowDescriptionError()
     {
-        // Arrange 
-        var product = new ProductDto
-        {
-            Title = "Product",
-            Price = 20.00m,
-            Description = string.Empty,
-            Type = ProductType.GPU,
-            CreatedDate = DateTime.UtcNow
-        };
-
-        // Act/Assert
-        _validator.TestValidate(product).ShouldHaveValidationErrorFor(x => x.Description);
+        // Arrange/Act/Assert
+        _validator.TestValidate(SeedData.GetProductDtoWithoutDescription())
+            .ShouldHaveValidationErrorFor(x => x.Description);
     }
 
     [Fact]
     public void Validator_ShouldThrowTypeError()
     {
-        // Arrange 
-        var product = new ProductDto
-        {
-            Title = "Product",
-            Price = 20.00m,
-            Description = "Description",
-            CreatedDate = DateTime.UtcNow
-        };
-
-        // Act/Assert
-        _validator.TestValidate(product).ShouldHaveValidationErrorFor(x => x.Type);
+        // Arrange/Act/Assert
+        _validator.TestValidate(SeedData.GetProductWithoutType())
+            .ShouldHaveValidationErrorFor(x => x.Type);
     }
 
     [Fact]
     public void Validator_ShouldThrowCreatedDateError()
     {
-        // Arrange 
-        var product = new ProductDto
-        {
-            Title = "Product",
-            Price = 20.00m,
-            Description = "Description",
-            Type = ProductType.Monitor
-        };
-
-        // Act/Assert
-        _validator.TestValidate(product).ShouldHaveValidationErrorFor(x => x.CreatedDate);
+        // Arrange/Act/Assert
+        _validator.TestValidate(SeedData.GetProductDtoWithoutCreatedDate())
+            .ShouldHaveValidationErrorFor(x => x.CreatedDate);
     }
 }

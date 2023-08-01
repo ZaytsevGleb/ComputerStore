@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities;
+﻿using DataAccess.Context;
+using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
@@ -15,21 +16,15 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
         _db = db;
         _entities = _db.Set<TEntity>();
     }
-    public async Task<TEntity> CreateAsync(TEntity item)
-    {
-        _entities.Add(item);
-        await _db.SaveChangesAsync();
 
-        return item;
+    public async Task<TEntity?> GetAsync(Guid id)
+    {
+        return await _entities
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task DeleteAsync(TEntity item)
-    {
-        _entities.Remove(item);
-        await _db.SaveChangesAsync();
-    }
-
-    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>>? predicate = null)
+    public async Task<IEnumerable<TEntity>> GetByExpression(Expression<Func<TEntity, bool>>? predicate = null)
     {
         var dbQuery = _entities
             .AsNoTracking()
@@ -44,7 +39,7 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
     }
 
     public async Task<TEntity?> FirstAsync(Expression<Func<TEntity, bool>> predicate,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+    Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
     {
         var dbQuery = _entities
             .AsQueryable();
@@ -58,11 +53,12 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
             .FirstOrDefaultAsync();
     }
 
-    public async Task<TEntity?> GetAsync(Guid id)
+    public async Task<TEntity> CreateAsync(TEntity item)
     {
-        return await _entities
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
+        _entities.Add(item);
+        await _db.SaveChangesAsync();
+
+        return item;
     }
 
     public async Task<TEntity> UpdateAsync(TEntity item)
@@ -70,5 +66,11 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
         _entities.Update(item);
         await _db.SaveChangesAsync();
         return item;
+    }
+
+    public async Task DeleteAsync(TEntity item)
+    {
+        _entities.Remove(item);
+        await _db.SaveChangesAsync();
     }
 }

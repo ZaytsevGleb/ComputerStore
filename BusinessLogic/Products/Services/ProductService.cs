@@ -11,18 +11,15 @@ namespace BusinessLogic.Products.Services;
 internal sealed class ProductService : IProductsService
 {
     private readonly IRepository<Product> _repository;
-    private readonly IDateTimeService _dateTimeService;
     private readonly IMapper _mapper;
     private readonly ILogger<ProductService> _logger;
 
     public ProductService(
         IRepository<Product> repository,
-        IDateTimeService dateTimeService,
         IMapper mapper,
         ILogger<ProductService> logger)
     {
         _repository = repository;
-        _dateTimeService = dateTimeService;
         _mapper = mapper;
         _logger = logger;
     }
@@ -37,16 +34,16 @@ internal sealed class ProductService : IProductsService
     public async Task<IEnumerable<ProductModel>> GetProductsAsync(string? title)
     {
         var products = string.IsNullOrEmpty(title)
-            ? await _repository.FindAsync()
-            : await _repository.FindAsync(x => x.Title == title
+            ? await _repository.GetByExpression()
+            : await _repository.GetByExpression(x => x.Title == title
                 || x.Title.Contains(title));
 
-        return products.Select(_mapper.Map<ProductModel>);
+        return _mapper.Map<IEnumerable<ProductModel>>(products);
     }
 
     public async Task<ProductModel> CreateProductAsync(ProductModel productModel)
     {
-        var products = await _repository.FindAsync(x => x.Title == productModel.Title);
+        var products = await _repository.GetByExpression(x => x.Title == productModel.Title);
         if (products.Any())
         {
             throw new BadRequestException("This product already exists");
@@ -64,8 +61,6 @@ internal sealed class ProductService : IProductsService
             _logger.LogError("Product with id: {id} was not found", id);
             throw new NotFoundException(nameof(Product), id);
         }
-
-        productModel.ModifiedDate = _dateTimeService.UtcNow;
 
         var updatedProduct = await _repository.UpdateAsync(_mapper.Map<Product>(productModel));
         return _mapper.Map<ProductModel>(updatedProduct);

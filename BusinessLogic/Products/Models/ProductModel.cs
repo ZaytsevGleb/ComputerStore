@@ -1,4 +1,4 @@
-﻿using DataAccess.Entities;
+﻿using Shared.Enums;
 
 namespace BusinessLogic.Products.Models;
 

@@ -1,7 +1,7 @@
 ﻿using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess;
+namespace DataAccess.Context;
 
 public sealed class ApplicationDbContext : DbContext
 {
@@ -9,5 +9,10 @@ public sealed class ApplicationDbContext : DbContext
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(new SetupDateInterceptor());
     }
 }

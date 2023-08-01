@@ -1,5 +1,7 @@
-﻿using DataAccess.Entities;
+﻿using DataAccess.Context;
+using DataAccess.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Enums;
 
 namespace DataAccess.Infrastructure;
 

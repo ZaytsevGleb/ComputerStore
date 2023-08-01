@@ -1,5 +1,5 @@
 using BusinessLogic;
-using DataAccess;
+using DataAccess.Context;
 using DataAccess.Infrastructure;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +28,7 @@ public static class Program
 
         // Register application dependencies
         builder.Services
-            .AddBusinessLogicDependencies()
-            .AddDataAccessDependencies(builder.Configuration)
+            .AddBusinessLogicDependencies(builder.Configuration)
             .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
             .AddAutoMapper(Assembly.GetExecutingAssembly());
 
