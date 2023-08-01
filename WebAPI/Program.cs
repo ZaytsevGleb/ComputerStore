@@ -1,8 +1,5 @@
 using BusinessLogic;
-using DataAccess.Context;
-using DataAccess.Infrastructure;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
@@ -76,21 +73,6 @@ public static class Program
 
                 endpoints.MapControllers();
             });
-
-        try
-        {
-            using var scope = application.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            await context.Database.MigrateAsync();
-
-            await SeedData.AddSeedDataAsync(scope.ServiceProvider);
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex, "An error occurred seeding the DB.");
-            await Log.CloseAndFlushAsync();
-            throw;
-        }
 
         await application.RunAsync();
     }
