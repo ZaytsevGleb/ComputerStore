@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Common.Exceptions;
+﻿using BusinessLogic.Exceptions;
 using WebAPI.Dtos;
 
 namespace WebAPI.Middleware;

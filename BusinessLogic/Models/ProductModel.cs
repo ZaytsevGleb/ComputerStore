@@ -1,6 +1,6 @@
 ﻿using Shared.Enums;
 
-namespace BusinessLogic.Products.Models;
+namespace BusinessLogic.Models;
 
 public sealed class ProductModel
 {

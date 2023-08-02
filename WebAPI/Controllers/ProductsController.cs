@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using BusinessLogic.Common.Exceptions;
-using BusinessLogic.Common.Interfaces;
-using BusinessLogic.Products.Models;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
@@ -49,7 +49,7 @@ public class ProductsController : ControllerBase
             throw new BadRequestException(validationResult);
 
         var model = await _productsService.CreateProductAsync(_mapper.Map<ProductModel>(dto));
-        return _mapper.Map<ProductDto>(model); 
+        return _mapper.Map<ProductDto>(model);
     }
 
     [HttpPut("{id:guid}", Name = "UpdateProduct")]

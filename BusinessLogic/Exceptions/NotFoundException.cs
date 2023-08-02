@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace BusinessLogic.Common.Exceptions;
+namespace BusinessLogic.Exceptions;
 
 [Serializable]
 public sealed class NotFoundException : Exception

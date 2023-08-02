@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using BusinessLogic.Common.Exceptions;
-using BusinessLogic.Common.Interfaces;
-using BusinessLogic.Products.Models;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Models;
 using DataAccess.Entities;
 using DataAccess.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace BusinessLogic.Products.Services;
+namespace BusinessLogic.Services;
 
 internal sealed class ProductService : IProductsService
 {
@@ -27,7 +27,6 @@ internal sealed class ProductService : IProductsService
     public async Task<ProductModel> GetProductAsync(Guid id)
     {
         var product = await _repository.GetAsync(id);
-
         return _mapper.Map<ProductModel>(product);
     }
 
@@ -43,8 +42,8 @@ internal sealed class ProductService : IProductsService
 
     public async Task<ProductModel> CreateProductAsync(ProductModel productModel)
     {
-        var products = await _repository.GetByExpression(x => x.Title == productModel.Title);
-        if (products.Any())
+        var product = await _repository.FirstAsync(x => x.Title == productModel.Title);
+        if (product is not null)
         {
             throw new BadRequestException("This product already exists");
         }
@@ -56,7 +55,7 @@ internal sealed class ProductService : IProductsService
     public async Task<ProductModel> UpdateProductAsync(Guid id, ProductModel productModel)
     {
         var product = await _repository.GetAsync(id);
-        if (product == null)
+        if (product is null)
         {
             _logger.LogError("Product with id: {id} was not found", id);
             throw new NotFoundException(nameof(Product), id);
@@ -70,7 +69,7 @@ internal sealed class ProductService : IProductsService
     {
         var product = await _repository.GetAsync(id);
 
-        if (product == null)
+        if (product is null)
         {
             _logger.LogError("Product with id: {id} was not found", id);
             throw new NotFoundException(nameof(Product), id);

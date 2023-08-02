@@ -42,6 +42,7 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
     Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
     {
         var dbQuery = _entities
+            .AsNoTracking()
             .AsQueryable();
 
         if (include != null)

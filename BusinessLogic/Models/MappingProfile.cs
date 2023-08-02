@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using BusinessLogic.Products.Models;
 using DataAccess.Entities;
 
-namespace BusinessLogic.Common;
+namespace BusinessLogic.Models;
 
 public sealed class MappingProfile : Profile
 {

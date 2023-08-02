@@ -1,5 +1,5 @@
-﻿using BusinessLogic.Common.Interfaces;
-using BusinessLogic.Products.Services;
+﻿using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
 using DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
