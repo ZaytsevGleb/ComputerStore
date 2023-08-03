@@ -1,6 +1,7 @@
-﻿using BusinessLogic.Common.Interfaces;
-using BusinessLogic.Common.Services;
-using BusinessLogic.Products.Services;
+﻿using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
+using DataAccess;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -8,15 +9,16 @@ namespace BusinessLogic;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddBusinessLogicDependencies(this IServiceCollection services)
+    public static IServiceCollection AddBusinessLogicDependencies(this IServiceCollection services, IConfiguration configuration)
     {
+        services
+            .AddDataAccessDependencies(configuration);
+
         services
             .AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services
             .AddScoped<IProductsService, ProductService>();
-        services
-            .AddSingleton<IDateTimeService, DateTimeService>();
 
         return services;
     }

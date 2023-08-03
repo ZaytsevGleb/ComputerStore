@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using BusinessLogic.Common.Exceptions;
-using BusinessLogic.Common.Interfaces;
-using BusinessLogic.Products.Models;
+using BusinessLogic.Exceptions;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
-using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace WebAPI.Controllers;
 
@@ -28,64 +27,45 @@ public class ProductsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("{guid:id}", Name = "GetProduct")]
-    [ProducesResponseType(Status200OK, Type = typeof(ProductDto))]
-    [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status404NotFound, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status500InternalServerError, Type = typeof(ErrorDto))]
-    public async Task<ActionResult<ProductDto>> GetProductAsync(Guid id)
+    [HttpGet("{id:guid}", Name = "GetProduct")]
+    public async Task<ProductDto> GetProductAsync(Guid id)
     {
         var model = await _productsService.GetProductAsync(id);
-        return Ok(_mapper.Map<ProductDto>(model));
+        return _mapper.Map<ProductDto>(model);
     }
 
     [HttpGet(Name = "GetProducts")]
-    [ProducesResponseType(Status200OK, Type = typeof(IEnumerable<ProductDto>))]
-    [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status500InternalServerError, Type = typeof(ErrorDto))]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsAsync([FromQuery] ProductSearchDto searchDto)
+    public async Task<IEnumerable<ProductDto>> GetProductsAsync([FromQuery] ProductSearchDto searchDto)
     {
-        var models = await _productsService.GetProductsAsync();
-        return Ok(models.Select(_mapper.Map<ProductDto>));
+        var models = await _productsService.GetProductsAsync(searchDto.Title);
+        return _mapper.Map<IEnumerable<ProductDto>>(models);
     }
 
     [HttpPost(Name = "CreateProduct")]
-    [ProducesResponseType(Status201Created, Type = typeof(ProductDto))]
-    [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status500InternalServerError, Type = typeof(ErrorDto))]
-    public async Task<ActionResult<ProductDto>> CreateProductAsync(ProductDto dto)
+    public async Task<ProductDto> CreateProductAsync(ProductDto dto)
     {
         var validationResult = _validator.Validate(dto);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult);
 
         var model = await _productsService.CreateProductAsync(_mapper.Map<ProductModel>(dto));
-        return Created($"api/products/{model.Id}", _mapper.Map<ProductDto>(model));
+        return _mapper.Map<ProductDto>(model);
     }
 
-    [HttpPut("{guid:id}", Name = "UpdateProduct")]
-    [ProducesResponseType(Status200OK, Type = typeof(ProductDto))]
-    [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status404NotFound, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status500InternalServerError, Type = typeof(ErrorDto))]
-    public async Task<ActionResult<ProductDto>> UpdateProductAsync(Guid id, ProductDto dto)
+    [HttpPut("{id:guid}", Name = "UpdateProduct")]
+    public async Task<ProductDto> UpdateProductAsync(Guid id, ProductDto dto)
     {
         var validationResult = _validator.Validate(dto);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult);
 
         var model = await _productsService.UpdateProductAsync(id, _mapper.Map<ProductModel>(dto));
-        return Ok(_mapper.Map<ProductDto>(model));
+        return _mapper.Map<ProductDto>(model);
     }
 
-    [HttpDelete("{guid:id}", Name = "DeleteProduct")]
-    [ProducesResponseType(Status204NoContent)]
-    [ProducesResponseType(Status400BadRequest, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status404NotFound, Type = typeof(ErrorDto))]
-    [ProducesResponseType(Status500InternalServerError, Type = typeof(ErrorDto))]
-    public async Task<ActionResult> DeleteProductAsync(Guid id)
+    [HttpDelete("{id:guid}", Name = "DeleteProduct")]
+    public async Task DeleteProductAsync(Guid id)
     {
         await _productsService.DeleteProductAsync(id);
-        return NoContent();
     }
 }
