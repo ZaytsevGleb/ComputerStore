@@ -10,6 +10,5 @@ public sealed class ProducDtoValidator : AbstractValidator<ProductDto>
         RuleFor(x => x.Price).NotEmpty().GreaterThan(0);
         RuleFor(x => x.Type).NotEmpty();
         RuleFor(x => x.Description).NotEmpty();
-        RuleFor(x => x.CreatedDate).NotEmpty();
     }
 }

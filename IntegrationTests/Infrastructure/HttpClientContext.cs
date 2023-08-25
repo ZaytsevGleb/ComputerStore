@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace IntegrationTests.Infrastructure;
 
@@ -13,22 +13,22 @@ public sealed class HttpClientContext
         _httpClient = httpClient;
     }
 
-    public async Task<T> GetAsync<T>(string path)
+    public async Task<T> GetAsync<T>(string path, Guid id)
     {
-        var response = await _httpClient.GetAsync(path);
+        var response = await _httpClient.GetAsync($"{path}/{id}");
         if (!response.IsSuccessStatusCode)
             return default!;
 
-        return await ConvertResponseTtDto<T>(response);
+        return await ConvertResponseToDto<T>(response);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync<T>(string path)
+    public async Task<IEnumerable<T>> GetAllAsync<T>(string path, string title)
     {
-        var response = await _httpClient.GetAsync(path);
+        var response = await _httpClient.GetAsync($"{path}?title={title}");
         if (!response.IsSuccessStatusCode)
             return default!;
 
-        return await ConvertResponseTtDto<IEnumerable<T>>(response);
+        return await ConvertResponseToDto<IEnumerable<T>>(response);
     }
 
     public async Task<T> CreateAsync<T>(string path, T dto)
@@ -37,15 +37,19 @@ public sealed class HttpClientContext
         byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
         var response = await _httpClient.PostAsync(path, byteContent);
-        return await ConvertResponseTtDto<T>(response);
+        if (!response.IsSuccessStatusCode)
+            return default!;
+
+        return await ConvertResponseToDto<T>(response);
     }
+
     public async Task<T> UpdateAsync<T>(string path, Guid id, T dto)
     {
         var byteContent = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
         byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-        var response = await _httpClient.PutAsync($"path/{id}", byteContent);
-        return await ConvertResponseTtDto<T>(response);
+        var response = await _httpClient.PutAsync($"{path}/{id}", byteContent);
+        return await ConvertResponseToDto<T>(response);
     }
 
     public async Task DeleteAsync(string path, Guid id)
@@ -55,7 +59,7 @@ public sealed class HttpClientContext
             throw new Exception(response.StatusCode.ToString());
     }
 
-    private async Task<T> ConvertResponseTtDto<T>(HttpResponseMessage response)
+    private async Task<T> ConvertResponseToDto<T>(HttpResponseMessage response)
     {
         var stringContent = await response.Content.ReadAsStringAsync();
         if (stringContent == null)
@@ -68,7 +72,7 @@ public sealed class HttpClientContext
         return dto ?? default!;
     }
 
-    public void Displose()
+    public void Dispose()
     {
         _httpClient.Dispose();
     }

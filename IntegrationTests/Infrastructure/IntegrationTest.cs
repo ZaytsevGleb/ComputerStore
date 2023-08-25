@@ -52,7 +52,7 @@ public abstract class IntegrationTest : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        HttpClient.Displose();
+        HttpClient.Dispose();
         await _factory.DisposeAsync();
     }
 }
