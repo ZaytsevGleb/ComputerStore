@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 namespace IntegrationTests.Infrastructure;
 
-public static class HttpClientExtensions
+public static class HttpClientExtension
 {
-    public static ByteArrayContent ConvertToRequest<T>(this T dto)
+    public static ByteArrayContent ConvertToByteArray<T>(this T dto)
     {
         var byteContent = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
         byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
