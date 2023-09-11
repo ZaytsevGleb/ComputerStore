@@ -9,5 +9,6 @@ public sealed class ProductDto
     public decimal Price { get; init; }
     public string Description { get; init; } = default!;
     public ProductType Type { get; init; }
-    public DateTime CreatedDate { get; init; }
+    public DateTime? CreatedDate { get; init; }
+    public DateTime? ModifiedDate { get; init; }
 }

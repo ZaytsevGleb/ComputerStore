@@ -18,11 +18,8 @@ public sealed class ProductsTests : IntegrationTest
         await AddSeedDataAsync(products);
         var product = products[0];
 
-        var productDto = await HttpClient.GetAsync<ProductDto>(UriConstants.Products, products[0].Id);
-        productDto!.Description.Should().Be(product.Description);
-        productDto.Title.Should().Be(product.Title);
-        productDto.Price.Should().Be(product.Price);
-        productDto.Type.Should().Be(product.Type);
+        var productDto = await HttpClient.GetAsync<ProductDto>(UriConstants.Products, product.Id);
+        productDto.Should().BeEquivalentTo(product);
     }
 
     [Fact]
@@ -37,9 +34,12 @@ public sealed class ProductsTests : IntegrationTest
     [Fact]
     public async Task GetProducts_ShouldReturnProducts()
     {
+        var expectedProducts = products.Where(x => x.Title.Contains("GB")).ToList();
+
         await AddSeedDataAsync(products);
         var productDtos = await HttpClient.GetAllAsync<ProductDto>(UriConstants.Products, "GB");
-        productDtos.Count().Should().Be(2);
+
+        productDtos!.Should().BeEquivalentTo(expectedProducts);
     }
 
     [Fact]
@@ -51,11 +51,11 @@ public sealed class ProductsTests : IntegrationTest
 
         await CheckInDbAsync(async db =>
         {
-            var existProduct = await db.Products.FirstOrDefaultAsync(x => x.Id == product.Id);
-            existProduct!.Price.Should().Be(product.Price);
-            existProduct.Title.Should().Be(product.Title);
-            existProduct.Description.Should().Be(product.Description);
-            existProduct.Type.Should().Be(product.Type);
+            var existingProduct = await db.Products.FirstOrDefaultAsync(x => x.Id == product.Id);
+            existingProduct!.Price.Should().Be(product.Price);
+            existingProduct.Title.Should().Be(product.Title);
+            existingProduct.Description.Should().Be(product.Description);
+            existingProduct.Type.Should().Be(product.Type);
         });
     }
 
@@ -72,30 +72,37 @@ public sealed class ProductsTests : IntegrationTest
     [Fact]
     public async Task UpdateProduct_ShouldUpdate()
     {
-        ///TODO remove id from controller
-        ///TODO Create IsSuccessResponse extension method
-        ///TODO thinkig about interceptors and validator with create modified dates
-        var id = products[0].Id;
         await AddSeedDataAsync(products);
+        var product = products[0];
 
-        var updatedProduct = new Product
-        {
-            Description = "Desc",
-            Price = 210,
-            Title = "Title",
-            Type = ProductType.SSD
-        };
+        product.Description = "Desc";
+        product.Price = 210;
+        product.Title = "Title";
+        product.Type = ProductType.SSD;
 
-        await HttpClient.UpdateAsync(UriConstants.Products, id, updatedProduct);
+        await HttpClient.UpdateAsync(UriConstants.Products, product.Id, product);
 
         await CheckInDbAsync(async db =>
         {
-            var updartedProduct = await db.Products.FirstOrDefaultAsync(x => x.Id == id);
-            updartedProduct!.Description.Should().Be(updatedProduct.Description);
-            updartedProduct.Title.Should().Be(updatedProduct.Title);
-            updartedProduct.Price.Should().Be(updatedProduct.Price);
-            updartedProduct.Type.Should().Be(updatedProduct.Type);
+            var updatedProduct = await db.Products.FirstOrDefaultAsync(x => x.Id == product.Id);
+            updatedProduct!.Description.Should().Be(product.Description);
+            updatedProduct.Title.Should().Be(product.Title);
+            updatedProduct.Price.Should().Be(product.Price);
+            updatedProduct.Type.Should().Be(product.Type);
         });
+    }
+
+    [Fact]
+    public async Task UpdateProduct_NewProduct_ShouldDoesntUpdateProduct()
+    {
+        await AddSeedDataAsync(products);
+
+        var invalidProduct = products[0];
+        invalidProduct.Id = Guid.NewGuid();
+
+        var result = await HttpClient.UpdateAsync(UriConstants.Products, invalidProduct.Id, invalidProduct);
+
+        result.Should().BeNull();
     }
 
     [Fact]

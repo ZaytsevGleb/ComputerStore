@@ -55,12 +55,4 @@ public class ProductDtoValidatorTests
         _validator.TestValidate(SeedData.GetProductWithoutType())
             .ShouldHaveValidationErrorFor(x => x.Type);
     }
-
-    [Fact]
-    public void Validator_ShouldThrowCreatedDateError()
-    {
-        // Arrange/Act/Assert
-        _validator.TestValidate(SeedData.GetProductDtoWithoutCreatedDate())
-            .ShouldHaveValidationErrorFor(x => x.CreatedDate);
-    }
 }

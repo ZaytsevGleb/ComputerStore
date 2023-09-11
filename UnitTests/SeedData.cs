@@ -10,8 +10,7 @@ public static class SeedData
         Title = "Product",
         Price = 1.00m,
         Description = "Description",
-        Type = ProductType.GPU,
-        CreatedDate = DateTime.Now
+        Type = ProductType.GPU
     };
 
     public static ProductDto GetProductDtoWithoutTitle() => new()
@@ -19,8 +18,7 @@ public static class SeedData
         Title = string.Empty,
         Price = 1.00m,
         Description = "Description",
-        Type = ProductType.GPU,
-        CreatedDate = DateTime.UtcNow
+        Type = ProductType.GPU
     };
 
     public static ProductDto GetProductDtoCustomPrice(decimal price) => new()
@@ -28,8 +26,7 @@ public static class SeedData
         Title = "Product",
         Price = price,
         Description = "Description",
-        Type = ProductType.GPU,
-        CreatedDate = DateTime.UtcNow
+        Type = ProductType.GPU
     };
 
     public static ProductDto GetProductDtoWithoutDescription() => new()
@@ -37,23 +34,13 @@ public static class SeedData
         Title = "Product",
         Price = 20.00m,
         Description = string.Empty,
-        Type = ProductType.GPU,
-        CreatedDate = DateTime.UtcNow
+        Type = ProductType.GPU
     };
 
     public static ProductDto GetProductWithoutType() => new()
     {
         Title = "Product",
         Price = 20.00m,
-        Description = "Description",
-        CreatedDate = DateTime.UtcNow
-    };
-
-    public static ProductDto GetProductDtoWithoutCreatedDate() => new()
-    {
-        Title = "Product",
-        Price = 20.00m,
-        Description = "Description",
-        Type = ProductType.Monitor
+        Description = "Description"
     };
 }

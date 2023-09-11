@@ -2,5 +2,5 @@
 
 public sealed class ProductSearchDto
 {
-    public string? Title { get; init; } = default!;
+    public string? Title { get; init; }
 }

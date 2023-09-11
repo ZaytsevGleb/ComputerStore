@@ -21,10 +21,8 @@ public static class SeedData
             {
                 Id = Guid.NewGuid(),
                 Title = "PELADN AMD Radeon RX6650XT 8GB GDDR6 PCI Express 4.0 Video Card",
-                Price = 1357,
+                Price = 1357.0m,
                 Description = "8GB 128-Bit GDDR6",
-                CreatedDate = DateTime.UtcNow,
-                ModifiedDate = DateTime.UtcNow,
                 Type = ProductType.GPU
             },
             new()
