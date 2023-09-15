@@ -10,7 +10,7 @@ public sealed class ApplicationDbContext : DbContext
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
-        if (Database.IsRelational())
+        if (Database.IsNpgsql())
         {
             Database.Migrate();
         }
@@ -23,6 +23,7 @@ public sealed class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplySeedData();
+        if (Database.IsNpgsql())
+            modelBuilder.ApplySeedData();
     }
 }

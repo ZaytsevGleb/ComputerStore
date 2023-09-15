@@ -25,6 +25,7 @@ public class SetupDateInterceptor : SaveChangesInterceptor
             if (entry.State == EntityState.Added)
             {
                 auditable!.CreatedDate = now;
+                auditable!.ModifiedDate = now;
             }
         }
 
