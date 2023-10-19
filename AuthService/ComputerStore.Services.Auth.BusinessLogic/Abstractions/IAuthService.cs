@@ -1,0 +1,8 @@
+﻿using ComputerStore.Services.Auth.BusinessLogic.Models;
+
+namespace ComputerStore.Services.Auth.BusinessLogic.Abstractions;
+public interface IAuthService
+{
+    Task<UserModel> Register(RegisterModel model);
+    Task<LoginResponseModel> Login(LoginModel model);
+}

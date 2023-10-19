@@ -1,0 +1,15 @@
+Docker:
+docker ps
+docker push zaytsevgleb/platformserivce
+docker build -t zaytsevgleb/platformservice .
+docker run -p 8080:80 -d zaytsevgleb/platformserivce
+docker stop fc9bfd2d10bb07323d78923226a2037b62c70dd642af3e2106e3d7da6ebbfaff
+
+K8S:
+kubectl get pods
+kubectl get deployments
+kubectl delete deployment platforms-depl
+kubectl apply -f platforms-depl.yaml    
+
+kubectl apply -f platforms-np-srv.yaml
+kubectl get services

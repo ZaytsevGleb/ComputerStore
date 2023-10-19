@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: computerstore
+  template:
+    metadata:
+      labels:
+        app: computerstore
+    spec:
+      containers:
+        - name: computerstore
+          image: zaytsevgleb/computerstore:latest
