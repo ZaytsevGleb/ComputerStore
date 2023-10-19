@@ -2,7 +2,7 @@
 using WebAPI.Dtos.Validators;
 using Xunit;
 
-namespace UnitTests.Products;
+namespace ComputerStore.Services.CS.UnitTests.Products;
 
 public class ProductDtoValidatorTests
 {

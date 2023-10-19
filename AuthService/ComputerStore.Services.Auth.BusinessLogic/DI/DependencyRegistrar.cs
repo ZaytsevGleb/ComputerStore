@@ -14,6 +14,6 @@ public static class DependencyRegistrar
 
         services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
 
-        services.AddTransient<IAuthService, AuthService>();
+        services.AddScoped<IAuthService, AuthService>();
     }
 }

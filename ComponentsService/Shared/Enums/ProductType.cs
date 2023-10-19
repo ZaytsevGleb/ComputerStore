@@ -1,4 +1,4 @@
-﻿namespace Shared.Enums;
+﻿namespace ComputerStore.Services.CS.Shared.Enums;
 
 public enum ProductType
 {

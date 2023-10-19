@@ -1,9 +1,9 @@
-﻿using DataAccess.Context;
+﻿using ComputerStore.Services.CS.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace DataAccess.Infrastructure;
+namespace ComputerStore.Services.CS.DataAccess.Infrastructure;
 
 public class DesignTimeApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {

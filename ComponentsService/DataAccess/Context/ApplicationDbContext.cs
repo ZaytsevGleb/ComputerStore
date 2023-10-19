@@ -1,8 +1,8 @@
-﻿using DataAccess.Entities;
-using DataAccess.Infrastructure;
+﻿using ComputerStore.Services.CS.DataAccess.Entities;
+using ComputerStore.Services.CS.DataAccess.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Context;
+namespace ComputerStore.Services.CS.DataAccess.Context;
 
 public sealed class ApplicationDbContext : DbContext
 {

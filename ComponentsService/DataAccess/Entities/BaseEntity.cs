@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Entities;
+﻿namespace ComputerStore.Services.CS.DataAccess.Entities;
 
 public abstract class BaseEntity
 {

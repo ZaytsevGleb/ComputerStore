@@ -1,4 +1,4 @@
-﻿using Shared.Enums;
+﻿using ComputerStore.Services.CS.Shared.Enums;
 
 namespace WebAPI.Dtos;
 

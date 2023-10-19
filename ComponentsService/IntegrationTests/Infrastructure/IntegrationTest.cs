@@ -1,9 +1,9 @@
-﻿using DataAccess.Context;
+﻿using ComputerStore.Services.CS.Api;
+using ComputerStore.Services.CS.DataAccess.Context;
 using Microsoft.Extensions.DependencyInjection;
-using WebApi;
 using Xunit;
 
-namespace IntegrationTests.Infrastructure;
+namespace ComputerStore.Services.CS.IntegrationTests.Infrastructure;
 
 public abstract class IntegrationTest : IAsyncLifetime
 {

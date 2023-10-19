@@ -8,7 +8,7 @@ public static class DependencyRegistrar
 {
     public static void AddDataAccessDependencies(this IServiceCollection services, IConfiguration config)
     {
-        services.AddDbContext<AppDbContext>(opt =>
+        services.AddDbContext<ApplicationDbContext>(opt =>
             {
                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });

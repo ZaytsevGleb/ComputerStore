@@ -1,6 +1,6 @@
-﻿using Shared.Enums;
+﻿using ComputerStore.Services.CS.Shared.Enums;
 
-namespace DataAccess.Entities;
+namespace ComputerStore.Services.CS.DataAccess.Entities;
 
 public sealed class Product : BaseEntity
 {

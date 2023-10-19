@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using BusinessLogic.Exceptions;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
+using ComputerStore.Services.CS.BusinessLogic.Exceptions;
+using ComputerStore.Services.CS.BusinessLogic.Interfaces;
+using ComputerStore.Services.CS.BusinessLogic.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;

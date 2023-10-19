@@ -1,6 +1,6 @@
-﻿using BusinessLogic.Models;
+﻿using ComputerStore.Services.CS.BusinessLogic.Models;
 
-namespace BusinessLogic.Interfaces;
+namespace ComputerStore.Services.CS.BusinessLogic.Interfaces;
 
 public interface IProductsService
 {

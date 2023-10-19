@@ -1,7 +1,7 @@
-﻿using DataAccess.Entities;
-using Shared.Enums;
+﻿using ComputerStore.Services.CS.DataAccess.Entities;
+using ComputerStore.Services.CS.Shared.Enums;
 
-namespace IntegrationTests.Infrastructure;
+namespace ComputerStore.Services.CS.IntegrationTests.Infrastructure;
 
 public static class SeedData
 {

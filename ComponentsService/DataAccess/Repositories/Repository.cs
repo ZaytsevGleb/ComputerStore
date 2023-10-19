@@ -1,10 +1,10 @@
-﻿using DataAccess.Context;
-using DataAccess.Entities;
+﻿using System.Linq.Expressions;
+using ComputerStore.Services.CS.DataAccess.Context;
+using ComputerStore.Services.CS.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using System.Linq.Expressions;
 
-namespace DataAccess.Repositories;
+namespace ComputerStore.Services.CS.DataAccess.Repositories;
 
 internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {

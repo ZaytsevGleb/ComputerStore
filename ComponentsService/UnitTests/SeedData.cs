@@ -1,7 +1,7 @@
-﻿using Shared.Enums;
+﻿using ComputerStore.Services.CS.Shared.Enums;
 using WebAPI.Dtos;
 
-namespace UnitTests;
+namespace ComputerStore.Services.CS.UnitTests;
 
 public static class SeedData
 {

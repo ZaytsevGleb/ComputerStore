@@ -23,7 +23,8 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult> Register(RegisterDto dto)
     {
-        return Ok();
+        var result = await _authService.Register(_mapper.Map<RegisterModel>(dto));
+        return Ok(result);
     }
 
     [HttpPost("login")]

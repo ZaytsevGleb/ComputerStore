@@ -1,8 +1,8 @@
-﻿using DataAccess.Entities;
+﻿using ComputerStore.Services.CS.DataAccess.Entities;
+using ComputerStore.Services.CS.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
-using Shared.Enums;
 
-namespace DataAccess.Infrastructure;
+namespace ComputerStore.Services.CS.DataAccess.Infrastructure;
 
 public static class SeedData
 {

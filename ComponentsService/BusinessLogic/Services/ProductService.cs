@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using BusinessLogic.Exceptions;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
-using DataAccess.Entities;
-using DataAccess.Repositories;
+using ComputerStore.Services.CS.BusinessLogic.Exceptions;
+using ComputerStore.Services.CS.BusinessLogic.Interfaces;
+using ComputerStore.Services.CS.BusinessLogic.Models;
+using ComputerStore.Services.CS.DataAccess.Entities;
+using ComputerStore.Services.CS.DataAccess.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace BusinessLogic.Services;
+namespace ComputerStore.Services.CS.BusinessLogic.Services;
 
 internal sealed class ProductService : IProductsService
 {

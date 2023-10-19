@@ -1,7 +1,7 @@
-﻿using FluentValidation.Results;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using FluentValidation.Results;
 
-namespace BusinessLogic.Exceptions;
+namespace ComputerStore.Services.CS.BusinessLogic.Exceptions;
 
 [Serializable]
 public sealed class BadRequestException : Exception

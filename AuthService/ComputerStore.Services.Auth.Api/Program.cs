@@ -1,6 +1,7 @@
 using ComputerStore.Services.Auth.Api.Mapper;
 using ComputerStore.Services.Auth.BusinessLogic.DI;
 using System.Reflection;
+using ComputerStore.Services.Auth.Api.Middleware;
 
 namespace ComputerStore.Services.Auth.Api;
 
@@ -27,6 +28,8 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        ExceptionMiddlewareExtensions.UseExceptionHandler(app);
+        app.UseRequestLoggingMiddleware();
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();

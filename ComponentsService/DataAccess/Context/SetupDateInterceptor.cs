@@ -1,8 +1,8 @@
-﻿using DataAccess.Entities;
+﻿using ComputerStore.Services.CS.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace DataAccess.Context;
+namespace ComputerStore.Services.CS.DataAccess.Context;
 
 public class SetupDateInterceptor : SaveChangesInterceptor
 {

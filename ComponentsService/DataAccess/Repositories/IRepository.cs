@@ -1,8 +1,8 @@
-﻿using DataAccess.Entities;
+﻿using System.Linq.Expressions;
+using ComputerStore.Services.CS.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore.Query;
-using System.Linq.Expressions;
 
-namespace DataAccess.Repositories;
+namespace ComputerStore.Services.CS.DataAccess.Repositories;
 
 public interface IRepository<TEntity> where TEntity : BaseEntity
 {

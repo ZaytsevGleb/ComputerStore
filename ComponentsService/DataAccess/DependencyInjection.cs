@@ -1,10 +1,10 @@
-﻿using DataAccess.Context;
-using DataAccess.Repositories;
+﻿using ComputerStore.Services.CS.DataAccess.Context;
+using ComputerStore.Services.CS.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DataAccess;
+namespace ComputerStore.Services.CS.DataAccess;
 
 public static class DependencyInjection
 {

@@ -1,13 +1,13 @@
-using BusinessLogic;
+using System.Reflection;
+using System.Text.Json.Serialization;
+using ComputerStore.Services.CS.BusinessLogic;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using System.Reflection;
-using System.Text.Json.Serialization;
 using WebApi.Middleware;
 using WebAPI.Middleware;
 
-namespace WebApi;
+namespace ComputerStore.Services.CS.Api;
 
 public class Program
 {

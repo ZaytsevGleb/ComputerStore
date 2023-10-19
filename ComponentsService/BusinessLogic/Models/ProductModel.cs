@@ -1,6 +1,6 @@
-﻿using Shared.Enums;
+﻿using ComputerStore.Services.CS.Shared.Enums;
 
-namespace BusinessLogic.Models;
+namespace ComputerStore.Services.CS.BusinessLogic.Models;
 
 public sealed class ProductModel
 {

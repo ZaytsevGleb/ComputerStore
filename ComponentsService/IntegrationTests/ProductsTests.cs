@@ -1,12 +1,12 @@
-﻿using DataAccess.Entities;
+﻿using ComputerStore.Services.CS.DataAccess.Entities;
+using ComputerStore.Services.CS.IntegrationTests.Infrastructure;
+using ComputerStore.Services.CS.Shared.Enums;
 using FluentAssertions;
-using IntegrationTests.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Shared.Enums;
 using WebAPI.Dtos;
 using Xunit;
 
-namespace IntegrationTests;
+namespace ComputerStore.Services.CS.IntegrationTests;
 
 public sealed class ProductsTests : IntegrationTest
 {

@@ -1,11 +1,11 @@
-﻿using BusinessLogic.Interfaces;
-using BusinessLogic.Services;
-using DataAccess;
+﻿using System.Reflection;
+using ComputerStore.Services.CS.BusinessLogic.Interfaces;
+using ComputerStore.Services.CS.BusinessLogic.Services;
+using ComputerStore.Services.CS.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
-namespace BusinessLogic;
+namespace ComputerStore.Services.CS.BusinessLogic;
 
 public static class DependencyInjection
 {

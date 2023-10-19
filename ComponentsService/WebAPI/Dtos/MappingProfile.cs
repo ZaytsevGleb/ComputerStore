@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogic.Models;
+using ComputerStore.Services.CS.BusinessLogic.Models;
 
 namespace WebAPI.Dtos;
 
