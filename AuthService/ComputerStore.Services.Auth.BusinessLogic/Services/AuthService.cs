@@ -87,4 +87,9 @@ public class AuthService : IAuthService
             AccessToken = _jwtTokenGenerator.GenerateToken(user)
         };
     }
+
+    public async Task Logout(CancellationToken ct)
+    {
+        await _signInManager.SignOutAsync();
+    }
 }

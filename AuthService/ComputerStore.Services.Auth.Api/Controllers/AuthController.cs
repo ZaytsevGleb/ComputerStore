@@ -3,6 +3,7 @@ using ComputerStore.Services.Auth.Api.Constants;
 using ComputerStore.Services.Auth.Api.Dtos;
 using ComputerStore.Services.Auth.BusinessLogic.Abstractions;
 using ComputerStore.Services.Auth.BusinessLogic.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerStore.Services.Auth.Api.Controllers;
@@ -34,5 +35,12 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.Login(_mapper.Map<LoginModel>(dto), ct);
         return Ok(_mapper.Map<LoginResponseDto>(result));
+    }
+    [Authorize]
+    [HttpPost(ControllerConstants.Logout)]
+    public async Task<ActionResult> Logout(CancellationToken ct)
+    {
+        await _authService.Logout(ct);
+        return Ok();
     }
 }
