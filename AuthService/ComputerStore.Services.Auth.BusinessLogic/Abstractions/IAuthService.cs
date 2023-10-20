@@ -3,6 +3,6 @@
 namespace ComputerStore.Services.Auth.BusinessLogic.Abstractions;
 public interface IAuthService
 {
-    Task<UserModel> Register(RegisterModel model);
-    Task<LoginResponseModel> Login(LoginModel model);
+    Task<UserModel> Register(RegisterModel model, CancellationToken ct);
+    Task<LoginResponseModel> Login(LoginModel model, CancellationToken ct);
 }

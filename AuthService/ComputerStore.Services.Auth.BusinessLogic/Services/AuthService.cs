@@ -1,10 +1,9 @@
-﻿using System.Text.Json.Serialization;
-using AutoMapper;
+﻿using AutoMapper;
 using ComputerStore.Services.Auth.BusinessLogic.Abstractions;
 using ComputerStore.Services.Auth.BusinessLogic.Errors;
 using ComputerStore.Services.Auth.BusinessLogic.Models;
-using ComputerStore.Services.Auth.DataAccess.Context;
 using ComputerStore.Services.Auth.DataAccess.Entities;
+using ComputerStore.Services.Auth.Shared.Enums;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
@@ -12,20 +11,23 @@ namespace ComputerStore.Services.Auth.BusinessLogic.Services;
 public class AuthService : IAuthService
 {
     private readonly UserManager<User> _userManager;
-    private readonly ApplicationDbContext _db;
+    private readonly SignInManager<User> _signInManager;
+    private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IMapper _mapper;
 
     public AuthService(
-        UserManager<User> userManager, 
-        ApplicationDbContext db,
+        UserManager<User> userManager,
+        SignInManager<User> signInManager,
+        IJwtTokenGenerator jwtTokenGenerator,
         IMapper mapper)
     {
         _userManager = userManager;
-        _db = db;
+        _signInManager = signInManager;
+        _jwtTokenGenerator = jwtTokenGenerator;
         _mapper = mapper;
     }
-    
-    public async Task<UserModel> Register(RegisterModel model)
+
+    public async Task<UserModel> Register(RegisterModel model, CancellationToken ct)
     {
         var user = new User
         {
@@ -46,8 +48,43 @@ public class AuthService : IAuthService
         return _mapper.Map<UserModel>(user);
     }
 
-    public Task<LoginResponseModel> Login(LoginModel model)
+    public async Task<LoginResponseModel> Login(LoginModel model, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByEmailAsync(model.Email);
+
+        if (user is null)
+        {
+            return new LoginResponseModel()
+            {
+                Succeeded = false,
+                FailureReason = FailureReason.UserNotFound
+            };
+        }
+
+        if (!await _userManager.CheckPasswordAsync(user, model.Password))
+        {
+            return new LoginResponseModel()
+            {
+                Succeeded = false,
+                FailureReason = FailureReason.WrongPassword
+            };
+        }
+
+        var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
+
+        if (!signInResult.Succeeded)
+        {
+            return new LoginResponseModel()
+            {
+                Succeeded = false,
+                FailureReason = FailureReason.UnknownReason
+            };
+        }
+
+        return new LoginResponseModel()
+        {
+            Succeeded = true,
+            AccessToken = _jwtTokenGenerator.GenerateToken(user)
+        };
     }
 }

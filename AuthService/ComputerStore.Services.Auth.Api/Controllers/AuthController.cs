@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ComputerStore.Services.Auth.Api.Constants;
 using ComputerStore.Services.Auth.Api.Dtos;
 using ComputerStore.Services.Auth.BusinessLogic.Abstractions;
 using ComputerStore.Services.Auth.BusinessLogic.Models;
@@ -6,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ComputerStore.Services.Auth.Api.Controllers;
 
-[Route("api/auth")]
 [ApiController]
+[Route(ControllerConstants.Auth)]
+[Produces("application/json")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -20,17 +22,17 @@ public class AuthController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpPost("register")]
-    public async Task<ActionResult> Register(RegisterDto dto)
+    [HttpPost(ControllerConstants.Register)]
+    public async Task<ActionResult> Register(RegisterDto dto, CancellationToken ct)
     {
-        var result = await _authService.Register(_mapper.Map<RegisterModel>(dto));
+        var result = await _authService.Register(_mapper.Map<RegisterModel>(dto), ct);
         return Ok(result);
     }
 
-    [HttpPost("login")]
-    public async Task<ActionResult<LoginResponseDto>> Login(LoginDto dto)
+    [HttpPost(ControllerConstants.Login)]
+    public async Task<ActionResult<LoginResponseDto>> Login(LoginDto dto, CancellationToken ct)
     {
-        var result = await _authService.Login(_mapper.Map<LoginModel>(dto));
+        var result = await _authService.Login(_mapper.Map<LoginModel>(dto), ct);
         return Ok(_mapper.Map<LoginResponseDto>(result));
     }
 }
