@@ -1,9 +1,11 @@
-using System.Reflection;
-using System.Text.Json.Serialization;
 using ComputerStore.Services.CS.BusinessLogic;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using WebApi.Middleware;
 using WebAPI.Middleware;
 
@@ -24,6 +26,17 @@ public class Program
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
+        // Auth configuration
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
+            {
+                opt.Authority = "https://localhost:7001";
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false
+                };
+            });
+
         // Register application dependencies
         builder.Services
             .AddBusinessLogicDependencies(builder.Configuration)
@@ -36,7 +49,7 @@ public class Program
             {
                 opt.SwaggerDoc(
                     name: "v1.0",
-                    info: new OpenApiInfo { Title = "ComputerStore API", Version = "v1.0" }
+                    info: new OpenApiInfo { Title = "Components API", Version = "v1.0" }
                 );
             });
 
@@ -67,6 +80,8 @@ public class Program
             .UseMiddleware<ExceptionMiddleware>()
             .UseCors()
             .UseRouting()
+            .UseAuthentication()
+            .UseAuthorization()
             .UseEndpoints(endpoints =>
             {
                 endpoints.MapGet(

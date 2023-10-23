@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
+using ComputerStore.Services.CS.Api.Constants;
 using ComputerStore.Services.CS.BusinessLogic.Exceptions;
 using ComputerStore.Services.CS.BusinessLogic.Interfaces;
 using ComputerStore.Services.CS.BusinessLogic.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
 
 namespace WebAPI.Controllers;
 
+[Authorize]
 [ApiController]
-[Route("api/products")]
+[Route(ApiConstants.Products)]
 [Produces("application/json")]
 public class ProductsController : ControllerBase
 {
@@ -27,21 +30,21 @@ public class ProductsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("{id:guid}", Name = "GetProduct")]
+    [HttpGet(ApiConstants.Id)]
     public async Task<ProductDto> GetProductAsync(Guid id)
     {
         var model = await _productsService.GetProductAsync(id);
         return _mapper.Map<ProductDto>(model);
     }
 
-    [HttpGet(Name = "GetProducts")]
+    [HttpGet]
     public async Task<IEnumerable<ProductDto>> GetProductsAsync([FromQuery] ProductSearchDto searchDto)
     {
         var models = await _productsService.GetProductsAsync(searchDto.Title);
         return _mapper.Map<IEnumerable<ProductDto>>(models);
     }
 
-    [HttpPost(Name = "CreateProduct")]
+    [HttpPost]
     public async Task<ProductDto> CreateProductAsync(ProductDto dto)
     {
         var validationResult = _validator.Validate(dto);
@@ -52,7 +55,7 @@ public class ProductsController : ControllerBase
         return _mapper.Map<ProductDto>(model);
     }
 
-    [HttpPut("{id:guid}", Name = "UpdateProduct")]
+    [HttpPut(ApiConstants.Id)]
     public async Task<ProductDto> UpdateProductAsync(Guid id, ProductDto dto)
     {
         var validationResult = _validator.Validate(dto);
@@ -63,7 +66,7 @@ public class ProductsController : ControllerBase
         return _mapper.Map<ProductDto>(model);
     }
 
-    [HttpDelete("{id:guid}", Name = "DeleteProduct")]
+    [HttpDelete(ApiConstants.Id)]
     public async Task DeleteProductAsync(Guid id)
     {
         await _productsService.DeleteProductAsync(id);

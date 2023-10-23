@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using ComputerStore.Services.Auth.Api.Dtos;
 using ComputerStore.Services.Auth.BusinessLogic.Errors;
+using ComputerStore.Services.Auth.BusinessLogic.Exceptions;
 using Newtonsoft.Json;
 
 namespace ComputerStore.Services.Auth.Api.Middleware;
