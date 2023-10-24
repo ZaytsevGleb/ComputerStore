@@ -1,6 +1,4 @@
-﻿using IdentityModel;
-using IdentityServer4;
-using IdentityServer4.Models;
+﻿using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System.Security.Claims;
 
@@ -24,7 +22,7 @@ namespace ComputerStore.Services.IdentityServer.WebApi.Configuration
         public static IEnumerable<ApiResource> ApiResources
             => new List<ApiResource>
             {
-                new ApiResource("ComponentsApi", "Web Api")
+                new ("ComponentsApi", "Web Api")
                 {
                     Scopes = { "ComponentsApi" }
                 }
@@ -80,8 +78,8 @@ namespace ComputerStore.Services.IdentityServer.WebApi.Configuration
                 Password = "MickPassword",
                 Claims = new List<Claim>
                 {
-                    new Claim("given_name", "Mick"),
-                    new Claim("family_name", "Mining")
+                    new ("given_name", "Mick"),
+                    new ("family_name", "Mining")
                 }
             },
             new TestUser
@@ -91,8 +89,8 @@ namespace ComputerStore.Services.IdentityServer.WebApi.Configuration
                 Password = "JanePassword",
                 Claims = new List<Claim>
                 {
-                    new Claim("given_name", "Jane"),
-                    new Claim("family_name", "Downing")
+                    new ("given_name", "Jane"),
+                    new ("family_name", "Downing")
                 }
             }
         };

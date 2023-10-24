@@ -37,6 +37,11 @@ public class Program
                 };
             });
 
+        builder.Services.AddAuthorization(opt =>
+        {
+            opt.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "client_id"));
+        });
+
         // Register application dependencies
         builder.Services
             .AddBusinessLogicDependencies(builder.Configuration)
