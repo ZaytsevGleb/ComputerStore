@@ -2,9 +2,9 @@
 
 namespace WebAPI.Dtos.Validators;
 
-public sealed class ProducDtoValidator : AbstractValidator<ProductDto>
+public sealed class ProductDtoValidator : AbstractValidator<ProductDto>
 {
-    public ProducDtoValidator()
+    public ProductDtoValidator()
     {
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.Price).NotEmpty().GreaterThan(0);
