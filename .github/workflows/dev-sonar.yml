@@ -51,10 +51,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          EXCLUDE_FROM_COVERAGE: "**/Program.cs, **/SeedData.cs, **/Middlewares/*, **/Validators/*, **/Extensions/*, **/Exceptions/*, **/Constants/*, **/Mappers/*, **/Context/**/*, **/Migrations/*, **/Configuration/*, **/Entities/*, **/Dtos/*, **/Models/*, **/Enums/*"
+          EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"ZaytsevGleb_ComputerStore" /o:"zaytsevgleb" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"ZaytsevGleb_ComputerStore" /o:"zaytsevgleb" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}" /d:sonar.cs.dotcover.reportsPaths=dotCover.Output.html
           dotnet build
-          dotnet dotcover test --dcReportType=HTML
+          dotnet dotcover test --dcReportType=HTML 
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
