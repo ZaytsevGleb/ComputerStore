@@ -6,11 +6,11 @@ namespace UnitTests.Products;
 
 public class ProductDtoValidatorTests
 {
-    private readonly ProducDtoValidator _validator;
+    private readonly ProductDtoValidator _validator;
 
     public ProductDtoValidatorTests()
     {
-        _validator = new ProducDtoValidator();
+        _validator = new ProductDtoValidator();
     }
 
     [Fact]

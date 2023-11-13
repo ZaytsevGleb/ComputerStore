@@ -5,7 +5,7 @@ namespace IntegrationTests.Infrastructure;
 
 public static class SeedData
 {
-    public static Product Product = new()
+    public static readonly Product Product = new()
     {
         Id = Guid.NewGuid(),
         Title = "PELADN AMD Radeon RX6650XT 8GB GDDR6 PCI Express 4.0 Video Card",
