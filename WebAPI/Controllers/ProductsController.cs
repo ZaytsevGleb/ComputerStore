@@ -28,44 +28,44 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id:guid}", Name = "GetProduct")]
-    public async Task<ProductDto> GetProductAsync(Guid id)
+    public async Task<ProductDto> GetProductAsync(Guid id, CancellationToken ct)
     {
-        var model = await _productsService.GetProductAsync(id);
+        var model = await _productsService.GetProductAsync(id, ct);
         return _mapper.Map<ProductDto>(model);
     }
 
     [HttpGet(Name = "GetProducts")]
-    public async Task<IEnumerable<ProductDto>> GetProductsAsync([FromQuery] ProductSearchDto searchDto)
+    public async Task<IEnumerable<ProductDto>> GetProductsAsync([FromQuery] ProductSearchDto searchDto, CancellationToken ct)
     {
-        var models = await _productsService.GetProductsAsync(searchDto.Title);
+        var models = await _productsService.GetProductsAsync(searchDto.Title, ct);
         return _mapper.Map<IEnumerable<ProductDto>>(models);
     }
 
     [HttpPost(Name = "CreateProduct")]
-    public async Task<ProductDto> CreateProductAsync(ProductDto dto)
+    public async Task<ProductDto> CreateProductAsync(ProductDto dto, CancellationToken ct)
     {
         var validationResult = _validator.Validate(dto);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult);
 
-        var model = await _productsService.CreateProductAsync(_mapper.Map<ProductModel>(dto));
+        var model = await _productsService.CreateProductAsync(_mapper.Map<ProductModel>(dto), ct);
         return _mapper.Map<ProductDto>(model);
     }
 
     [HttpPut("{id:guid}", Name = "UpdateProduct")]
-    public async Task<ProductDto> UpdateProductAsync(Guid id, ProductDto dto)
+    public async Task<ProductDto> UpdateProductAsync(Guid id, ProductDto dto, CancellationToken ct)
     {
         var validationResult = _validator.Validate(dto);
         if (!validationResult.IsValid)
             throw new BadRequestException(validationResult);
 
-        var model = await _productsService.UpdateProductAsync(id, _mapper.Map<ProductModel>(dto));
+        var model = await _productsService.UpdateProductAsync(id, _mapper.Map<ProductModel>(dto), ct);
         return _mapper.Map<ProductDto>(model);
     }
 
     [HttpDelete("{id:guid}", Name = "DeleteProduct")]
-    public async Task DeleteProductAsync(Guid id)
+    public async Task DeleteProductAsync(Guid id, CancellationToken ct)
     {
-        await _productsService.DeleteProductAsync(id);
+        await _productsService.DeleteProductAsync(id, ct);
     }
 }

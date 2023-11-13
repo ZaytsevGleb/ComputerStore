@@ -17,14 +17,14 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
         _entities = _db.Set<TEntity>();
     }
 
-    public async Task<TEntity?> GetAsync(Guid id)
+    public async Task<TEntity?> GetAsync(Guid id, CancellationToken ct)
     {
         return await _entities
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id, ct);
     }
 
-    public async Task<IEnumerable<TEntity>> GetByExpression(Expression<Func<TEntity, bool>>? predicate = null)
+    public async Task<IEnumerable<TEntity>> GetByExpression(Expression<Func<TEntity, bool>>? predicate, CancellationToken ct)
     {
         var dbQuery = _entities
             .AsNoTracking()
@@ -35,11 +35,11 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
             dbQuery = dbQuery.Where(predicate);
         }
 
-        return await dbQuery.ToListAsync();
+        return await dbQuery.ToListAsync(ct);
     }
 
     public async Task<TEntity?> FirstAsync(Expression<Func<TEntity, bool>> predicate,
-    Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+    Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include, CancellationToken ct)
     {
         var dbQuery = _entities
             .AsNoTracking()
@@ -50,28 +50,27 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
             dbQuery = include.Invoke(dbQuery);
         }
 
-        return await dbQuery
-            .FirstOrDefaultAsync();
+        return await dbQuery.FirstOrDefaultAsync(ct);
     }
 
-    public async Task<TEntity> CreateAsync(TEntity item)
+    public async Task<TEntity> CreateAsync(TEntity item, CancellationToken ct)
     {
         _entities.Add(item);
-        await _db.SaveChangesAsync();
+        await _db.SaveChangesAsync(ct);
 
         return item;
     }
 
-    public async Task<TEntity> UpdateAsync(TEntity item)
+    public async Task<TEntity> UpdateAsync(TEntity item, CancellationToken ct)
     {
         _entities.Update(item);
-        await _db.SaveChangesAsync();
+        await _db.SaveChangesAsync(ct);
         return item;
     }
 
-    public async Task DeleteAsync(TEntity item)
+    public async Task DeleteAsync(TEntity item, CancellationToken ct)
     {
         _entities.Remove(item);
-        await _db.SaveChangesAsync();
+        await _db.SaveChangesAsync(ct);
     }
 }
