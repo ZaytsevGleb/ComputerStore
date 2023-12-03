@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
 
-namespace WebAPI.Controllers;
+namespace ComputerStore.Services.CS.Api.Controllers;
 
-[Authorize]
+[Authorize("ClientIdPolicy")]
 [ApiController]
 [Route(ApiConstants.Products)]
 [Produces("application/json")]
