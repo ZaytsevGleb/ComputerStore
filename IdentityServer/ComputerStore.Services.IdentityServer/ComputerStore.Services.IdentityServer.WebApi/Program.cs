@@ -3,6 +3,7 @@ using ComputerStore.Services.IdentityServer.WebApi.Data;
 using ComputerStore.Services.IdentityServer.WebApi.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +26,8 @@ builder.Services.AddIdentity<User, Role>(opt =>
 
 // IdentityServer configuration
 builder.Services.AddIdentityServer()
-    .AddAspNetIdentity<User>()
-    /* .AddInMemoryApiResources(ISConfiguration.ApiResources)
-     .AddInMemoryIdentityResources(ISConfiguration.IdentityResources)
-     .AddTestUsers(ISConfiguration.TestUsers)*/
+    .AddInMemoryApiResources(ISConfiguration.ApiResources)
+    .AddInMemoryIdentityResources(ISConfiguration.IdentityResources)
     .AddInMemoryApiScopes(ISConfiguration.ApiScopes)
     .AddInMemoryClients(ISConfiguration.Clients)
     .AddDeveloperSigningCredential();
@@ -38,14 +37,17 @@ builder.Services.ConfigureApplicationCookie(cfg =>
     cfg.Cookie.Name = "ComputerStore.Identity.Cookie";
     cfg.LoginPath = "/Auth/Login";
     cfg.LogoutPath = "/Auth/Logout";
-    
+
 });
 
+builder.Services.AddHttpClient();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
-/*.AddDefaultTokenProviders();*/
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

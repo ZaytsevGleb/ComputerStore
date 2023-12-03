@@ -51,7 +51,7 @@ internal sealed class Repository<TEntity> : IRepository<TEntity> where TEntity :
         }
 
         return await dbQuery
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(predicate);
     }
 
     public async Task<TEntity> CreateAsync(TEntity item)

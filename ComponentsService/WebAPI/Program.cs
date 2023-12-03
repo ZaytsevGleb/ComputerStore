@@ -1,3 +1,4 @@
+using ComputerStore.Services.CS.Api.Constants;
 using ComputerStore.Services.CS.BusinessLogic;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,10 +31,12 @@ public class Program
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
             {
-                opt.Authority = "https://localhost:7001";
+                opt.Authority = IdentityConstants.Uri;
+                opt.Audience = IdentityConstants.Uri;
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.FromSeconds(5)
                 };
             });
 

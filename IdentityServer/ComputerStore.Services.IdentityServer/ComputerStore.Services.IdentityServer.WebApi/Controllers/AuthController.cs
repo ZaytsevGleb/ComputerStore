@@ -21,8 +21,8 @@ namespace ComputerStore.Services.IdentityServer.WebApi.Controllers
 
         public AuthController(
             UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        IIdentityServerInteractionService interactionService)
+            SignInManager<User> signInManager,
+            IIdentityServerInteractionService interactionService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -30,7 +30,7 @@ namespace ComputerStore.Services.IdentityServer.WebApi.Controllers
         }
 
         [HttpPost(ApiConstants.Register)]
-        public async Task<ActionResult> Register(RegisterDto dto, CancellationToken ct)
+        public async Task<ActionResult> Register(RegisterDto dto)
         {
             var user = new User
             {
@@ -44,15 +44,15 @@ namespace ComputerStore.Services.IdentityServer.WebApi.Controllers
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
             {
-                var errors = JsonConvert.SerializeObject(result.Errors);
+                var errors = JsonConvert.SerializeObject(result.Errors.First().Code);
                 throw new BadRequestException($"Some errors during creation of user: {errors}");
             }
 
-            return Ok(User);
+            return Ok(user);
         }
 
         [HttpPost(ApiConstants.Login)]
-        public async Task<ActionResult<LoginResponseDto>> Login(LoginDto dto, CancellationToken ct)
+        public async Task<ActionResult<LoginResponseDto>> Login(LoginDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
 
@@ -95,7 +95,7 @@ namespace ComputerStore.Services.IdentityServer.WebApi.Controllers
 
         [Authorize]
         [HttpPost(ApiConstants.logout)]
-        public async Task<ActionResult> Logout(string logoutId,CancellationToken ct)
+        public async Task<ActionResult> Logout(string logoutId)
         {
             await _signInManager.SignOutAsync();
             var logoutRequest = await _interactionService.GetLogoutContextAsync(logoutId);
